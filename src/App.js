@@ -1,6 +1,6 @@
 import { snacks } from "./data";
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
   const [snacksData, setSnacksData] = useState(snacks);
@@ -15,16 +15,12 @@ function App() {
     ingredients: false,
   });
 
-  useEffect(() => {
-    const newData = snacksData.filter(
-      (snack) =>
-        snack.product_name.toLowerCase().includes(search) ||
-        snack.ingredients.join(" ").toLowerCase().includes(search)
-    );
-
-    const searchedSnacksData = search?.length !== 0 ? newData : snacks;
-    setSnacksData(() => searchedSnacksData);
-  }, [search]);
+  const newData = snacksData.filter(
+    (snack) =>
+      snack.product_name.toLowerCase().includes(search) ||
+      snack.ingredients.join(" ").toLowerCase().includes(search)
+  );
+  const searchedSnacksData = search?.length !== 0 ? newData : snacksData;
 
   const handleToggle = (type) => {
     switch (type) {
@@ -128,7 +124,7 @@ function App() {
         }
         break;
       default:
-      // code block
+        setSnacksData(() => searchedSnacksData);
     }
   };
 
@@ -173,7 +169,7 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {snacksData.map((data) => (
+            {searchedSnacksData.map((data) => (
               <tr key={data.id}>
                 <td>{data.id}</td>
                 <td>{data.product_name}</td>
