@@ -17,18 +17,14 @@ function App() {
   });
 
   useEffect(() => {
-    if (search) {
-      const abc = snacksData.filter();
-      setSnacksData(
-        snacksData.filter((data) => {
-          if (data.product_name.includes(search)) {
-            return data;
-          } else {
-            setSnacksData(snacks);
-          }
-        })
-      );
-    }
+    const newData = snacksData.filter(
+      (snack) =>
+        snack.product_name.toLowerCase().includes(search) ||
+        snack.ingredients.join(" ").toLowerCase().includes(search)
+    );
+
+    const searchedSnacksData = search?.length !== 0 ? newData : snacks;
+    setSnacksData(() => searchedSnacksData);
   }, [search]);
 
   const handleToggle = (type) => {
@@ -48,35 +44,85 @@ function App() {
         break;
 
       case "product_name":
-        const sortByName = [...snacksData];
-        sortByName.sort((a, b) => b.product_name - a.product_name);
-        console.log(sortByName);
-        setSnacksData(() => sortByName);
+        if (toggleState.product_name) {
+          const sortByName = [...snacksData];
+          sortByName.sort((a, b) =>
+            a.product_name.localeCompare(b.product_name)
+          );
+          setSnacksData(() => sortByName);
+          setToggleState(() => ({ ...toggleState, product_name: false }));
+        } else {
+          const sortByName = [...snacksData];
+          sortByName.sort((a, b) =>
+            b.product_name.localeCompare(a.product_name)
+          );
+          setSnacksData(() => sortByName);
+          setToggleState(() => ({ ...toggleState, product_name: true }));
+        }
         break;
 
       case "product_weight":
-        const sortByWeight = [...snacksData];
-        sortByWeight.sort((a, b) => b.product_weight - a.product_weight);
-        console.log(sortByWeight);
-        setSnacksData(() => sortByWeight);
+        if (toggleState.product_weight) {
+          const sortByWeight = [...snacksData];
+          sortByWeight.sort(
+            (a, b) =>
+              Number(a.product_weight.slice(0, -1)) -
+              Number(b.product_weight.slice(0, -1))
+          );
+          setSnacksData(() => sortByWeight);
+          setToggleState(() => ({ ...toggleState, product_weight: false }));
+        } else {
+          const sortByWeight = [...snacksData];
+          sortByWeight.sort(
+            (a, b) =>
+              Number(b.product_weight.slice(0, -1)) -
+              Number(a.product_weight.slice(0, -1))
+          );
+          setSnacksData(() => sortByWeight);
+          setToggleState(() => ({ ...toggleState, product_weight: true }));
+        }
         break;
 
       case "price":
-        const sortByPrice = [...snacksData];
-        sortByPrice.sort((a, b) => b.price - a.price);
-        setSnacksData(() => sortByPrice);
+        if (toggleState.price) {
+          const sortByPrice = [...snacksData];
+          sortByPrice.sort((a, b) => a.price - b.price);
+          setSnacksData(() => sortByPrice);
+          setToggleState(() => ({ ...toggleState, price: false }));
+        } else {
+          const sortByPrice = [...snacksData];
+          sortByPrice.sort((a, b) => b.price - a.price);
+          setSnacksData(() => sortByPrice);
+          setToggleState(() => ({ ...toggleState, price: true }));
+        }
         break;
 
       case "calories":
-        const sortByCalories = [...snacksData];
-        sortByCalories.sort((a, b) => b.calories - a.calories);
-        setSnacksData(() => sortByCalories);
+        if (toggleState.calories) {
+          const sortByCalories = [...snacksData];
+          sortByCalories.sort((a, b) => a.calories - b.calories);
+          setSnacksData(() => sortByCalories);
+          setToggleState(() => ({ ...toggleState, calories: false }));
+        } else {
+          const sortByCalories = [...snacksData];
+          sortByCalories.sort((a, b) => b.calories - a.calories);
+          setSnacksData(() => sortByCalories);
+          setToggleState(() => ({ ...toggleState, calories: true }));
+        }
         break;
 
       case "ingredients":
-        const sortByIngredients = [...snacksData];
-        sortByIngredients.sort((a, b) => b.ingredients - a.ingredients);
-        setSnacksData(() => sortByIngredients);
+        if (toggleState.ingredients) {
+          const sortByIngredients = [...snacksData];
+          sortByIngredients.sort((a, b) => b.ingredients - a.ingredients);
+          setSnacksData(() => sortByIngredients);
+          setToggleState(() => ({ ...toggleState, ingredients: false }));
+        } else {
+          const sortByIngredients = [...snacksData];
+          sortByIngredients.sort((a, b) => b.ingredients - a.ingredients);
+          setSnacksData(() => sortByIngredients);
+          setToggleState(() => ({ ...toggleState, ingredients: true }));
+        }
         break;
       default:
       // code block
@@ -96,14 +142,30 @@ function App() {
         <table className="table">
           <thead>
             <tr>
-              <th onClick={() => handleToggle("id")}>ID</th>
-              <th onClick={() => handleToggle("product_name")}>Product Name</th>
+              <th onClick={() => handleToggle("id")}>
+                ID
+                {/* {toggleState.id ? " 🔽" : ""} */}
+              </th>
+              <th onClick={() => handleToggle("product_name")}>
+                Product Name
+                {/* {toggleState.product_name ? " 🔽" : ""} */}
+              </th>
               <th onClick={() => handleToggle("product_weight")}>
                 Product Weight
+                {/* {toggleState.product_weight ? " 🔽" : ""} */}
               </th>
-              <th onClick={() => handleToggle("price")}>Price</th>
-              <th onClick={() => handleToggle("calories")}>Calories</th>
-              <th onClick={() => handleToggle("ingredients")}>Ingredients</th>
+              <th onClick={() => handleToggle("price")}>
+                Price
+                {/* {toggleState.price ? " 🔽" : ""} */}
+              </th>
+              <th onClick={() => handleToggle("calories")}>
+                Calories
+                {/* {toggleState.calories ? " 🔽" : ""} */}
+              </th>
+              <th onClick={() => handleToggle("ingredients")}>
+                Ingredients
+                {/* {toggleState.ingredients ? " 🔽" : ""} */}
+              </th>
             </tr>
           </thead>
           <tbody>
