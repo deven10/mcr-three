@@ -13,6 +13,12 @@
   width: 100%;
 }
 
+.app h1{
+  text-align: center;
+  font-family: sans-serif;
+  padding: 25px;
+}
+
 .search-input{
   border: 1px solid #ccc;
   background-color: transparent;

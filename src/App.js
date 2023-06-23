@@ -3,7 +3,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
-  console.log(snacks);
   const [snacksData, setSnacksData] = useState(snacks);
   const [search, setSearch] = useState("");
 
@@ -114,12 +113,16 @@ function App() {
       case "ingredients":
         if (toggleState.ingredients) {
           const sortByIngredients = [...snacksData];
-          sortByIngredients.sort((a, b) => b.ingredients - a.ingredients);
+          sortByIngredients.sort((a, b) =>
+            b.ingredients[0].localeCompare(a.ingredients[0])
+          );
           setSnacksData(() => sortByIngredients);
           setToggleState(() => ({ ...toggleState, ingredients: false }));
         } else {
           const sortByIngredients = [...snacksData];
-          sortByIngredients.sort((a, b) => b.ingredients - a.ingredients);
+          sortByIngredients.sort((a, b) =>
+            a.ingredients[0].localeCompare(b.ingredients[0])
+          );
           setSnacksData(() => sortByIngredients);
           setToggleState(() => ({ ...toggleState, ingredients: true }));
         }
@@ -131,6 +134,7 @@ function App() {
 
   return (
     <div className="app">
+      <h1>Snack Table</h1>
       <input
         className="search-input"
         type="text"
